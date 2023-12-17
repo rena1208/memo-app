@@ -46,7 +46,7 @@ class LoginController extends Controller
 
 
             return new JsonResponse([
-                'message' => 'Authenticated.',
+                'message' => '認証成功！',
             ]);
             }else {
             // ユーザーがいない｜または｜DBのパスワードと合致していなければ
@@ -55,7 +55,7 @@ class LoginController extends Controller
             ]);
         }
     }catch (\Exception $e) {
-        // 例外をログに記録する
+        // 例外をログへ
         \Log::error('Login error: ' . $e->getMessage());
         throw ValidationException::withMessages([
                 'email' => ['メールアドレス、もしくはパスワードが違います'],
