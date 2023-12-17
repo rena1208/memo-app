@@ -24,11 +24,14 @@
     </div>
     <div class="box">
       <form class="login-form">
-        <p>メールアドレス</p>
-        <input id="email" type="string" v-model="email" />
-        <p><label for="password">パスワード</label></p>
-        <input id="password" type="password" v-model="password" />
-        <p></p>
+        <dl>
+          <dt>メールアドレス：</dt>
+          <dd><input id="email" type="string" v-model="email" /></dd>
+        </dl>
+        <dl>
+          <dt><label for="password">パスワード：</label></dt>
+          <dd><input id="password" type="password" v-model="password" /></dd>
+        </dl>
         <!-- <meta name="csrf-token" content="{{ csrf_token() }}" /> -->
         <button type="button" @click="login">ログイン</button>
       </form>
@@ -111,7 +114,7 @@ h1 {
 
 .box {
   padding: 1em 1em;
-  margin: 3em 8em;
+  margin: 3em 15em;
   color: #565656;
   background: #ffffdd;
   box-shadow: 0px 0px 0px 4px #fcc89e;
@@ -120,6 +123,41 @@ h1 {
 .login-form {
   display: block;
   margin: 0 auto;
+  text-align: center;
+}
+
+dl {
+  display: flex;
+  justify-content: space-between;
+  background-size: 15px 2px;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  margin: 25px 3.5rem;
+}
+dt {
+  font-size: 18px;
+  text-align: left;
+  padding-top: 15px;
+  padding-left: 100px;
+  width: 300px;
+}
+dd {
+  padding-top: 10px;
+  width: calc(100% - 50px);
+  text-align: left;
+}
+input {
+  width: 70%;
+  height: 25px;
+}
+button {
+  margin: 10px 0;
+  font-size: 15px;
+}
+.alert-danger {
+  background: #ffd9d9;
+  color: #ff4f4fe4;
+  font-weight: bold;
 }
 </style>
 

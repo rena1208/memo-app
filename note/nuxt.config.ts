@@ -6,6 +6,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   ssr: false,
+  // routeRules: {
+  //   // '/account/**': { ssr: false },
+  //   '/auth/**': { ssr: false }
+  // },
 
   modules: [
     'nuxt-sanctum-auth'

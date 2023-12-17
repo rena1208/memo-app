@@ -23,7 +23,15 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('1234'),
                 'created_at' => now(),
                 'updated_at' => now()
-            ]
+            ],
+
+            [
+                'name' => '太郎',
+                'email' => 'taro@test.com',
+                'password' => Hash::make('1122'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ];
 
         DB::table('users')->insert($data);
