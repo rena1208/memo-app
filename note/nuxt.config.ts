@@ -1,15 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { defineNuxtConfig } from 'nuxt/config'
+// import { defineNuxtConfig } from 'nuxt/config'
 // import nuxtSanctumAuth from '/dist/module.mjs'
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-
   ssr: false,
-  // routeRules: {
-  //   // '/account/**': { ssr: false },
-  //   '/auth/**': { ssr: false }
-  // },
+  devtools: { enabled: true },
 
   modules: [
     'nuxt-sanctum-auth'
@@ -21,8 +16,8 @@ export default defineNuxtConfig({
 
     endpoints: {
       csrf: '/sanctum/csrf-cookie',
-      login: 'api/login',
-      logout: 'api/logout',
+      login: '/api/login',
+      logout: '/api/logout',
       user: '/api/user',
       // login: { url: "/api/login", method: "post" },
       // logout: { url: "/api/logout", method: "post" },

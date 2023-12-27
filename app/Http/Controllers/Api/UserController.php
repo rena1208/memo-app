@@ -18,11 +18,18 @@ class UserController extends Controller
         // $users = User::all();
         $user = $request->user();
         //ログの出力
-        \Log::info($request->url());
-        \Log::info($user);
+        // \Log::info($request->url());
+        // \Log::info($user);
         \Log::info(auth()->user());
-
-        return response()->json(compact('user'),200);
+        // \Log::info($request->session()->all());
+        // \Log::info($request->cookies->all());
+        // \Log::info($request->cookie('XSRF-TOKEN'));
+        // \Log::info($request->headers->all());
+        // \Log::info(config('session'));
+        // \Log::info(config('cors'));
+        // \Log::info(file_get_contents(base_path('.env')));
+        return $user;
+        // return response()->json(compact('user'),200);
     }
 
     //ユーザーの新規登録
