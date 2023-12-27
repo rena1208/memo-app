@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'cookie'),
+    'driver' => env('SESSION_DRIVER', 'file'),
 
     /*
     |--------------------------------------------------------------------------
@@ -197,5 +197,7 @@ return [
     */
 
     'same_site' => 'lax',
+
+    'partitioned' => false,
 
 ];
