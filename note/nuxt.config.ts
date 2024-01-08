@@ -6,8 +6,10 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
 
+
   modules: [
-    'nuxt-sanctum-auth'
+    'nuxt-sanctum-auth',
+
   ],
 
   nuxtSanctumAuth: {
@@ -18,7 +20,7 @@ export default defineNuxtConfig({
       csrf: '/sanctum/csrf-cookie',
       login: '/api/login',
       logout: '/api/logout',
-      user: '/api/user',
+      user: '/api/user/{userid}',
       // login: { url: "/api/login", method: "post" },
       // logout: { url: "/api/logout", method: "post" },
       // user: { url: "/api/user", method: "get" },

@@ -41,92 +41,23 @@
 </template>
 
 <script setup>
-// definePageMeta({
-//   middleware: "guest",
-// });
-// // 初期値の設定
-// const email = ref("");
-// const password = ref("");
-// const { $sanctumAuth } = useNuxtApp();
-// // console.log($sanctumAuth);
-// // const { $sanctumAuth } = useSanctumAuth();
-// const router = useRouter();
-// const errors = ref([]);
-// // await $apiFetch("sanctum/csrf-cookie");
-// // let token; // tokenの宣言
-// // await useFetch("http://localhost:8000/sanctum/csrf-cookie", {
-// //   method: "GET",
-// //   mode: "cors",
-// //   credentials: "include",
-// // });
-
-// async function login() {
-//   console.log("おした");
-//   console.log(email.value);
-//   console.log(password.value);
-//   try {
-//     await $sanctumAuth.login(
-//       {
-//         email: email.value, // フォームで入力されたメールアドレス
-//         password: password.value, // フォームで入力されたパスワード
-//       },
-//       // optional callback function
-//       (data) => {
-//         // $sanctumAuth.getUser(); // fetch and set user data
-//         console.log(data);
-//         router.push("/show");
-//       }
-//     );
-//     console.log(email.value);
-//     console.log(password.value);
-//   } catch (e) {
-//     // 認証エラー時の処理
-//     console.log(e.errors);
-//     errors.value = ["メールアドレス、もしくはパスワードが違います。"];
-//     router.push("/login");
-//   }
-// }
-
-// const { data: users } = await useFetch("http://127.0.0.1:8000/api/users");
-// 初期値の設定
-// const email = ref("");
-// const password = ref("");
 definePageMeta({
   middleware: "guest",
 });
+
 const { $sanctumAuth } = useNuxtApp();
 
-// console.log($sanctumAuth);
-// const { $sanctumAuth } = useSanctumAuth();
 const router = useRouter();
 const errors = ref([]);
 
-// const { user, loggedIn } = useAuth(); // or useState('auth').value
-// await $apiFetch("sanctum/csrf-cookie");
-// await $apiFetch("http://localhost:8000/sanctum/csrf-cookie", {
-//   method: "GET",
-//   mode: "cors",
-//   credentials: "include",
-// });
-// var token;
+//初期値の設定;
+const email = ref("");
+const password = ref("");
 
-// await useFetch("http://localhost:8000/sanctum/csrf-cookie", {
-//   method: "GET",
-//   mode: "cors",
-//   credentials: "include",
-// }).then(() => {
-//   token = document.cookie
-//     .split("; ")
-//     .find((row) => row.startsWith("XSRF-TOKEN"))
-//     ?.split("=")[1];
-// });
-// const { data: csrf } = await useFetch("sanctum/csrf-cookie");
-// console.log(csrf);
+// console.log($sanctumAuth);
 
 async function login() {
   console.log("おした");
-  // const { data: csrf } = await useFetch("sanctum/csrf-cookie");
-  // console.log(csrf);
   try {
     await $sanctumAuth.login(
       {
@@ -135,23 +66,29 @@ async function login() {
       },
 
       // optional callback function
+
       (data) => {
         // $sanctumAuth.getUser(); // fetch and set user data
+        console.log(email.value);
+        console.log(password.value);
+        // console.log(params.userid);
         console.log(data);
-        router.push("/show");
+
+        // console.log(data.user.id);
+        // router.push("/show");
+        // router.push("/register");
+        router.push(`/user/{userid}/show`);
       }
     );
     console.log(email.value);
     console.log(password.value);
   } catch (e) {
     // 認証エラー時の処理
-    console.log(e.errors);
+    console.log(errors);
     errors.value = ["メールアドレス、もしくはパスワードが違います。"];
     router.push("/login");
   }
 }
-
-// const { token } = useAuth();
 </script>
 
 <style>
