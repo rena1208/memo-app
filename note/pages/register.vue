@@ -1,6 +1,13 @@
 <template>
   <div>
     <h2>新規登録</h2>
+    <div v-if="errors" class="alert alert-danger">
+      <ul>
+        <li v-for="error in errors" :key="error">
+          {{ error }}
+        </li>
+      </ul>
+    </div>
     <div class="box">
       <form class="postUser-form">
         <dl>
@@ -36,7 +43,6 @@
           </dd>
         </dl>
         <p></p>
-        <!-- <meta name="csrf-token" content="{{ csrf_token() }}" /> -->
         <button type="button" @click="registerUser">登録！</button>
       </form>
     </div>
@@ -61,84 +67,52 @@ const { $sanctumAuth } = useNuxtApp();
 
 async function registerUser() {
   console.log("おした");
-  try {
-    //入力内容をポスト
-    const { data: register } = await useFetch(
-      "http://127.0.0.1:8000/api/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name.value,
-          email: email.value,
-          email_confirmation: email_confirmation.value,
-          password: password.value,
-          password_confirmation: password_confirmation.value,
-        }),
-      }
-    );
-
-    console.log(name.value);
-    console.log(email.value);
-    console.log(email_confirmation.value);
-    console.log(password.value);
-    console.log(password_confirmation.value);
-    console.log(register);
-  } catch (e) {
-    console.log(errors.value);
-    errors.value = e.errors;
-  }
-  //ポストした内容でログイン
-  try {
-    await $sanctumAuth.login(
-      {
-        email: email.value, // フォームで入力されたメールアドレス
-        password: password.value, // フォームで入力されたパスワード
+  //入力内容をポスト
+  const { error, data: register } = await useFetch(
+    "http://127.0.0.1:8000/api/register",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        name: name.value,
+        email: email.value,
+        email_confirmation: email_confirmation.value,
+        password: password.value,
+        password_confirmation: password_confirmation.value,
+      }),
+    }
+  );
 
-      // optional callback function
-      (data) => {
-        // $sanctumAuth.getUser(); // fetch and set user data
-        console.log(data);
-        router.push("/show");
-      }
-    );
-    console.log(email.value);
-    console.log(password.value);
-  } catch (e) {
-    // 認証エラー時の処理
-    console.log(e.errors);
-    // router.push("/login");
+  console.log(error.value.statusCode);
+  console.log(error.value.data.errors);
+  console.log(error);
+  if (error.value.statusCode === 422) {
+    // バリデーションエラーがある場合
+    errors.value = error.value.data.errors;
+    console.log(errors.value);
+  } else {
+    //   // その他のエラー
+    //   // console.error("Registration failed:", error.message);
+    // }
+    //ポストした内容でログイン
+    try {
+      await $sanctumAuth.login(
+        {
+          email: email.value,
+          password: password.value,
+        },
+        (data) => {
+          // console.log(data);
+          router.push("/show");
+        }
+      );
+    } catch (e) {
+      console.error("ログインエラー:", e.errors);
+    }
   }
 }
-// const registerUser = async () => {
-//   console.log("おした");
-//   try {
-//     const response = await $sanctumAuth.register({
-//       name: name.value,
-//       email: email.value,
-//       email_confirmation: email_confirmation.value,
-//       password: password.value,
-//       password_confirmation: password_confirmation.value,
-//     });
-
-//     console.log(name.value);
-//     console.log(email.value);
-//     console.log(email_confirmation.value);
-//     console.log(password.value);
-//     console.log(password_confirmation.value);
-
-//     (data) => {
-//       // $sanctumAuth.getUser(); // fetch and set user data
-//       console.log(data);
-//       router.push("/show");
-//     };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 </script>
 
 <style>
@@ -195,5 +169,11 @@ input {
 button {
   margin-top: 10px;
   font-size: 15px;
+}
+
+.alert-danger {
+  background: #ffd9d9;
+  color: #ff4f4fe4;
+  font-weight: bold;
 }
 </style>

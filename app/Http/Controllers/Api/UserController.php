@@ -7,33 +7,50 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
 
 class UserController extends Controller
 {
     //ログイン後ユーザーの情報を返す
-    public function index(Request $request)
+    public function index(Request $request, $userid)
     {
         // $users = User::all();
         $user = $request->user();
+        $userid = 1;
         //ログの出力
         // \Log::info($request->url());
-        // \Log::info($user);
+        \Log::info($userid);
         \Log::info(auth()->user());
-        // \Log::info($request->session()->all());
-        // \Log::info($request->cookies->all());
-        // \Log::info($request->cookie('XSRF-TOKEN'));
-        // \Log::info($request->headers->all());
-        // \Log::info(config('session'));
-        // \Log::info(config('cors'));
-        // \Log::info(file_get_contents(base_path('.env')));
+
         return $user;
         // return response()->json(compact('user'),200);
     }
 
     //ユーザーの新規登録
     public function register(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email'  => 'required|email|unique:users,email',
+            'password' => 'required|max:30|min:4'
+        ],
+        // [
+        //     'name.required' => 'お名前は必須です',
+        //     'email.required' => 'メールアドレスは必須です',
+        //     'email.email' => '正しいメールアドレスの形式で入力してください',
+        //     'email.unique' => 'すでに登録されているメールアドレスです',
+        //     'password.required' => 'パスワードは必須です',
+        //     'password.max' => 'パスワードは:max文字以下で入力してください',
+        //     'password.min' => 'パスワードは:min文字以上で入力してください',
+        // ]
+        );
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+
         $postUser = new User;
         $postUser->name = $request->name;
         $postUser->email = $request->email;
@@ -42,32 +59,6 @@ class UserController extends Controller
         $request->validate(['password' =>['required','confirmed']]);
         $postUser->save();
 
-        // $postUser = User::create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'email' => $request->validate(['email' =>['required','confirmed']]),
-        //     'password' => Hash::make($request->password),
-        //     'password'=> $request->validate(['password' =>['required','confirmed']]),
-        // ]);
-
-        // Auth::login($postUser);
-
-        // return response()->json(['message' => 'User registered and logged in successfully.']);
-    //     try {
-    //     if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-    //         $request->session()->regenerate();
-    
-    //         return new JsonResponse([
-    //             'message' => 'Authenticated.',
-    //         ]);
-    //     }
-    // }catch (\Exception $e) {
-    //     // 例外をログに記録する
-    //     \Log::error('Login error: ' . $e->getMessage());
-    //     // throw ValidationException::withMessages([
-    //     //         'email' => ['メールアドレス、もしくはパスワードが違います'],
-    //     //     ]);
-    // }
 
 }
        

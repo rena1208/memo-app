@@ -30,23 +30,9 @@ Route::post('/login',[LoginController::class,'login']);
 Route::post('/register', [UserController::class,'register']);
 // Route::post('/post',[PostController::class,'postNote']);
 
-
-// Route::group(['middleware' => 'auth:sanctum'],function(){
-//     Route::get('/user',[UserController::class,'index']);
-//     //メモの登録
-//     Route::post('/post',[PostController::class,'store']);
-// });
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::get('/user',[UserController::class,'index']);
-    // Route::get('/user', function (Request $request) {
-    //     $user = $request->user();
-    //     \Log::info($user);
-    //     return $user;
-    // });
-    // Route::post('/posts', function (Request $request) {
-    //     $users = User::all();
-    //     return response()->json(compact('users'),200);
-    //  });
+    Route::get('/user/{userid}',[UserController::class,'index']);
+    
     Route::post('/post',[PostController::class,'store']);
 });
 // Route::get('/user', [UserController::class,'index']);
