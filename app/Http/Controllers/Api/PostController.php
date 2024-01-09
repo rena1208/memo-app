@@ -14,7 +14,7 @@ use App\Models\User;
 
 class PostController extends Controller
 {
-    //
+    //メモの新規投稿
     public function store(Request $request){
         //バリデーション
             $validator = Validator::make($request->all(), [

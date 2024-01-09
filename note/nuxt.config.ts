@@ -31,7 +31,7 @@ export default defineNuxtConfig({
       tokenCookieKey: 'nuxt-sanctum-auth-token'
     },
     redirects: {
-      home: '/show',
+      home: '/user/{userid}/show',
       login: '/login',
       logout: '/'
     }

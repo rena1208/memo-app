@@ -62,15 +62,6 @@ class LoginController extends Controller
             ]);
     }
     }
-    // $credentials = $request->validate([
-    //     'email' => ['required', 'email'],
-    //     'password' => ['required'],
-    // ]);
-    // // 認証が成功した場合の処理
-    // if (Auth::attempt($credentials)) {
-    //     // セッションIDの再生成
-    //     $request->session()->regenerate();
-    //     return response()->json(['message' => 'ログイン成功']);
-    // }
+    
 }
 
