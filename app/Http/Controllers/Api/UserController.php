@@ -11,22 +11,27 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
+use App\Models\Post;
+
 
 class UserController extends Controller
 {
     //ログイン後ユーザーの情報を返す
     public function index(Request $request, $userid)
     {
-        // $users = User::all();
         $user = $request->user();
-        $userid = 1;
+        $userid = Auth::id();
+        //ログインユーザーのメモ情報を返す
+        $posts =Post::where('user_id', $user->id)->get();
+        // $posts =Post::where('user_id', $user->id)->with('posts')->orderBy('updated_at','desc');
         //ログの出力
-        // \Log::info($request->url());
         \Log::info($userid);
+        \Log::info($posts);
         \Log::info(auth()->user());
 
-        return $user;
-        // return response()->json(compact('user'),200);
+        // return $user;
+        // return response()->json(compact('user', 'posts'),200);
+        return response()->json(['user' => $user, 'posts' => $posts],200);
     }
 
     //ユーザーの新規登録

@@ -30,9 +30,12 @@ Route::post('/login',[LoginController::class,'login']);
 Route::post('/register', [UserController::class,'register']);
 // Route::post('/post',[PostController::class,'postNote']);
 
+//ログインユーザーの機能
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    //ログインユーザーの情報
     Route::get('/user/{userid}',[UserController::class,'index']);
-    
-    Route::post('/post',[PostController::class,'store']);
+    //メモの投稿
+    Route::post('/user/{userid}/post',[PostController::class,'store']);
+    //メモの一覧表示
+    // Route::get('/user/{userid}',[PostController::class,'postIndex']);
 });
-// Route::get('/user', [UserController::class,'index']);

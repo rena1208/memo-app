@@ -90,8 +90,9 @@ async function registerUser() {
   console.log(error);
   if (error.value.statusCode === 422) {
     // バリデーションエラーがある場合
+    // errors.value = e.text;
     errors.value = error.value.data.errors;
-    console.log(errors.value);
+    console.log(error.value.data.errors);
   } else {
     //   // その他のエラー
     //   // console.error("Registration failed:", error.message);
