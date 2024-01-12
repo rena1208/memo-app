@@ -1,7 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-// import { defineNuxtConfig } from 'nuxt/config'
-// import nuxtSanctumAuth from '/dist/module.mjs'
-
 export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
@@ -11,6 +7,12 @@ export default defineNuxtConfig({
     'nuxt-sanctum-auth',
 
   ],
+
+  runtimeConfig: {
+    public: {
+      baseUrl: process.env.BASE_URL,
+    },
+  },
 
   nuxtSanctumAuth: {
     token: false, // set true to use jwt-token auth instead of cookie. default is false

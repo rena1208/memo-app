@@ -4,7 +4,7 @@
     <div v-if="errors" class="alert alert-danger">
       <ul>
         <li v-for="error in errors" :key="error">
-          {{ error }}
+          <p v-for="e in error" :key="e">{{ e }}</p>
         </li>
       </ul>
     </div>
@@ -50,6 +50,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: "guest",
+});
 // 初期値の設定
 const name = ref("");
 const email = ref("");
@@ -64,31 +67,34 @@ const errors = ref([]);
 const router = useRouter();
 
 const { $sanctumAuth } = useNuxtApp();
+const { $apiFetch } = useNuxtApp();
+const $config = useRuntimeConfig();
+
+// console.log($config);
 
 async function registerUser() {
   console.log("おした");
   //入力内容をポスト
-  const { error, data: register } = await useFetch(
-    "http://127.0.0.1:8000/api/register",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name.value,
-        email: email.value,
-        email_confirmation: email_confirmation.value,
-        password: password.value,
-        password_confirmation: password_confirmation.value,
-      }),
-    }
-  );
+  const { error, data: register } = await useFetch(`api/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    baseURL: $config.public.baseUrl,
+    body: JSON.stringify({
+      name: name.value,
+      email: email.value,
+      email_confirmation: email_confirmation.value,
+      password: password.value,
+      password_confirmation: password_confirmation.value,
+    }),
+  });
 
-  console.log(error.value.statusCode);
-  console.log(error.value.data.errors);
+  // console.log(error.value.statusCode);
+  // console.log(error.value.data.errors);
+  console.log(register);
   console.log(error);
-  if (error.value.statusCode === 422) {
+  if (error && error.value && error.value.statusCode === 422) {
     // バリデーションエラーがある場合
     // errors.value = e.text;
     errors.value = error.value.data.errors;
@@ -105,8 +111,8 @@ async function registerUser() {
           password: password.value,
         },
         (data) => {
-          // console.log(data);
-          router.push("/show");
+          console.log(data);
+          router.push(`/user/{userid}/show`);
         }
       );
     } catch (e) {

@@ -15,6 +15,7 @@
         >さんのメモ
       </p>
     </div>
+    <button type="button" @click="logout">ログアウト</button>
     <!-- <div v-for="user in users" :key="user.id"> -->
     <div v-for="post in posts" :key="post.id">
       <h3>{{ post.title }}</h3>
@@ -55,6 +56,7 @@
 definePageMeta({
   middleware: "auth",
 });
+const { $sanctumAuth } = useNuxtApp();
 
 //パラメーターの取得
 const router = useRouter();
@@ -85,6 +87,19 @@ console.log(postsData.value.user);
 //   return { userid };
 // }
 
+//ログアウト機能
+async function logout() {
+  console.log("ログアウトを押した");
+  await $sanctumAuth.logout(
+    // optional callback function
+    (data) => {
+      console.log(data);
+      router.push("/login");
+    }
+  );
+}
+
+//メモの投稿
 async function postNote() {
   // await $apiFetch("sanctum/csrf-cookie");
   console.log("おした");
