@@ -22,7 +22,8 @@ export default defineNuxtConfig({
       csrf: '/sanctum/csrf-cookie',
       login: '/api/login',
       logout: '/api/logout',
-      user: '/api/user/{userid}',
+      // user: '/api/user/{userid}',
+      user: '/api/user',
       // login: { url: "/api/login", method: "post" },
       // logout: { url: "/api/logout", method: "post" },
       // user: { url: "/api/user", method: "get" },
@@ -33,7 +34,7 @@ export default defineNuxtConfig({
       tokenCookieKey: 'nuxt-sanctum-auth-token'
     },
     redirects: {
-      home: '/user/{userid}/show',
+      home: '/show',
       login: '/login',
       logout: '/'
     }

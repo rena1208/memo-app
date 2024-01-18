@@ -18,7 +18,7 @@
     <div v-if="errors.length" class="alert alert-danger">
       <ul>
         <li v-for="error in errors" :key="error">
-          {{ errors }}
+          {{ error }}
         </li>
       </ul>
     </div>
@@ -69,19 +69,14 @@ async function login() {
 
       (data) => {
         // $sanctumAuth.getUser(); // fetch and set user data
-        console.log(email.value);
-        console.log(password.value);
         // console.log(params.userid);
+        // console.log(data.id);
         console.log(data);
-
-        // console.log(data.user.id);
-        // router.push("/show");
+        router.push("/show");
         // router.push("/register");
-        router.push(`/user/{userid}/show`);
+        // router.push(`/user/{userid}/show`);
       }
     );
-    console.log(email.value);
-    console.log(password.value);
   } catch (e) {
     // 認証エラー時の処理
     console.log(errors);
