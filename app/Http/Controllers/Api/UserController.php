@@ -17,15 +17,16 @@ use App\Models\Post;
 class UserController extends Controller
 {
     //ログイン後ユーザーの情報を返す
-    public function index(Request $request, $userid)
+    // public function index(Request $request, $userid)
+    public function index(Request $request)
     {
         $user = $request->user();
-        $userid = Auth::id();
+        // $userid = Auth::id();
         //ログインユーザーのメモ情報を返す
-        $posts =Post::where('user_id', $user->id)->get();
+        $posts =Post::where('user_id', $user->id)->orderBy('updated_at', 'desc')->get();
         // $posts =Post::where('user_id', $user->id)->with('posts')->orderBy('updated_at','desc');
         //ログの出力
-        \Log::info($userid);
+        // \Log::info($userid);
         \Log::info($posts);
         \Log::info(auth()->user());
 
@@ -41,15 +42,6 @@ class UserController extends Controller
             'email'  => 'required|email|unique:users,email',
             'password' => 'required|max:30|min:4'
         ],
-        // [
-        //     'name.required' => 'お名前は必須です',
-        //     'email.required' => 'メールアドレスは必須です',
-        //     'email.email' => '正しいメールアドレスの形式で入力してください',
-        //     'email.unique' => 'すでに登録されているメールアドレスです',
-        //     'password.required' => 'パスワードは必須です',
-        //     'password.max' => 'パスワードは:max文字以下で入力してください',
-        //     'password.min' => 'パスワードは:min文字以上で入力してください',
-        // ]
         );
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);

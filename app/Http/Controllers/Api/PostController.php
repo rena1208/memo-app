@@ -32,9 +32,11 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->text = $request->input('text');
         $post->save();
-        \Log::info($request->user());
-        \Log::info(auth()->user());
-        \Log::info(Auth::id());
+        \Log::info(response()->json(compact('post')));
+        return response()->json(compact('post'),200);
+        
+        // \Log::info(auth()->user());
+        // \Log::info(Auth::id());
 
         // if ($result) {
         //     session()->flash('flash.success', '登録に成功しました');
@@ -42,5 +44,34 @@ class PostController extends Controller
         //     session()->flash('flash.error', '登録に失敗しました');
         // }
         // $headerValue = $request->header('header_name');
+    }
+
+    //メモの詳細データ表示
+    public function postDetail($postid) {
+        $userid = Auth::id();
+        $post = Post::where('user_id', $userid)->findOrFail($postid);
+
+        \Log::info($userid);
+        \Log::info($post);
+        \Log::info($postid);
+        return response()->json($post);
+
+    }
+    
+
+    //メモの削除機能
+    public function deletePost($postid) {
+        $user = Auth::user();
+        $userid = Auth::id();
+        $post = Post::where('user_id', $userid)->findOrFail($postid);
+        $post->delete();
+        // $post =Post::where('user_id', $user->id)->where('id', $user->id);
+        \Log::info(response()->json(compact('post')));
+        return response()->json(compact('post'),200);
+        \Log::info($user);
+        \Log::info($userid);
+        \Log::info($post);
+        \Log::info($postid);
+        
     }
 }

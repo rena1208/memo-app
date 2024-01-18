@@ -8,19 +8,23 @@
         </li>
       </ul>
     </div> -->
-    <h2>メモ一覧</h2>
-    <div v-if="loggedIn">
-      <p>
-        <span>{{ loginUser.name }}</span
-        >さんのメモ
-      </p>
-    </div>
+    <h2>
+      <span>{{ loginUser.name }}</span
+      >さんのメモ一覧
+    </h2>
+    {{ $route.params.userid }}
+    <div v-if="loggedIn"></div>
     <button type="button" @click="logout">ログアウト</button>
     <!-- <div v-for="user in users" :key="user.id"> -->
     <div v-for="post in posts" :key="post.id">
-      <h3>{{ post.title }}</h3>
-      <p>{{ post.text }}</p>
+      <h3 id="title">{{ post.title }}</h3>
+      <p id="text">{{ post.text }}</p>
+      <button type="button">
+        <nuxt-link :to="`post/${post.id}/detail`">詳細</nuxt-link>
+      </button>
+      <button type="button" @click="deletePost(post.id)">削除</button>
     </div>
+    <p v-if="updatedPosts">{{ updatedPosts }}</p>
     <!-- </div> -->
     <!-- @foreach($users as $user)
   @foreach($user->posts as $post)
@@ -34,7 +38,7 @@
       <div v-if="errors" class="alert alert-danger">
         <ul>
           <li v-for="error in errors" :key="error">
-            {{ error }}
+            <p v-for="e in error" :key="e">{{ e }}</p>
           </li>
         </ul>
       </div>
@@ -53,6 +57,7 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 definePageMeta({
   middleware: "auth",
 });
@@ -67,19 +72,27 @@ console.log("User Object:", user);
 console.log("Is Logged In:", loggedIn);
 const users = ref();
 const errors = ref([]);
+const posts = ref([]);
+const title = ref("");
+const text = ref("");
 const { $apiFetch } = useNuxtApp();
+const $config = useRuntimeConfig();
 //ログインユーザー情報の取得
 const { data: postsData } = await useAsyncData("user", () =>
-  $apiFetch(`api/user/{userid}`)
+  // $apiFetch(`api/user/{userid}`)
+  $apiFetch(`api/user`)
 );
-
-const posts = postsData.value.posts;
-const loginUser = postsData.value.user;
-// console.log(posts);
+console.log(posts);
 console.log(postsData);
-console.log(loginUser);
+
+posts.value = postsData.value.posts;
+// posts = postsData.value.posts;
+// const posts = postsData.value.posts;
+const loginUser = postsData.value.user;
+
+// console.log(loginUser.id);
 // console.log(postsData.value.posts);
-console.log(postsData.value.user);
+// console.log(postsData.value.user);
 //パラメータの取得
 // async function asyncData({ params }) {
 //   const userid = params.userid;
@@ -99,13 +112,44 @@ async function logout() {
   );
 }
 
+//メモの削除機能
+async function deletePost(postid) {
+  console.log("削除をおした");
+  console.log(postid);
+  const { error, data: deletePost } = await useAsyncData("post", () =>
+    $apiFetch(`api/user/post/${postid}`, {
+      method: "DELETE",
+    })
+  );
+  console.log(error);
+  console.log(deletePost);
+  if (error && error.value) {
+    console.error("メモの削除に失敗しました", error);
+  } else {
+    console.log("メモが削除されました", deletePost);
+    // メモ一覧を再取得
+    // const { data: postsData } = await useAsyncData("user", () =>
+    //   $apiFetch(`api/user`)
+    // );
+    posts.value = postsData.value.posts;
+    console.log(posts.value); //削除前のメモたち
+    console.log(deletePost); //削除したメモ
+    console.log(postid); //削除したメモのID
+    const postIndex = posts.value.findIndex(
+      (deletePost) => deletePost.id === postid
+    );
+    console.log(postIndex);
+    posts.value.splice(postIndex, 1); //削除
+  }
+}
+
 //メモの投稿
 async function postNote() {
   // await $apiFetch("sanctum/csrf-cookie");
   console.log("おした");
   //入力内容をポスト
   const { error, data: post } = await useAsyncData("post", () =>
-    $apiFetch(`api/user/{userid}/post`, {
+    $apiFetch(`api/user/post`, {
       method: "POST",
 
       body: JSON.stringify({
@@ -114,9 +158,9 @@ async function postNote() {
       }),
     })
   );
-  console.log(title.value);
-  console.log(text.value);
-  console.log(post);
+  // console.log(title.value);
+  // console.log(text.value);
+  // console.log(post);
   // console.log(error.value.statusCode);
   // console.log(error.value.data.errors);
   // console.log(error);
@@ -125,6 +169,19 @@ async function postNote() {
     errors.value = error.value.data.errors;
     // console.log(errors.value);
     console.log(error.value.data.errors);
+  } else {
+    // メモ一覧を再取得
+    // const { data: postsData } = await useAsyncData("user", () =>
+    //   $apiFetch(`api/user`)
+    // );
+
+    // posts.value = postsData.value.posts;
+    console.log(posts.value); //ポスト前のメモたち
+    console.log(post); //投稿したメモ
+    postsData.value.posts.unshift(post.value.post);
+    // posts.value.push(post.value.post);
+    title.value = "";
+    text.value = "";
   }
 }
 </script>

@@ -33,12 +33,16 @@ Route::post('/register', [UserController::class,'register']);
 
 //ログインユーザーの機能
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    //ログインユーザーの情報
-    Route::get('/user/{userid}',[UserController::class,'index']);
+    //ログインユーザーの情報とメモの取得
+    // Route::get('/user/{userid}',[UserController::class,'index']);
+    Route::get('/user',[UserController::class,'index']);
     //ログアウト
     Route::post('/logout',[LogoutController::class,'logout']);
     //メモの投稿
-    Route::post('/user/{userid}/post',[PostController::class,'store']);
-    //メモの一覧表示
-    // Route::get('/user/{userid}',[PostController::class,'postIndex']);
+    // Route::post('/user/{userid}/post',[PostController::class,'store']);
+    Route::post('/user/post',[PostController::class,'store']);
+    //メモの詳細
+    Route::get('/user/post/{postid}',[PostController::class,'postDetail']);
+    //メモの削除機能
+    Route::delete('/user/post/{postid}', [PostController::class, 'deletePost']);
 });
