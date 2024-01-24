@@ -27,8 +27,8 @@ class UserController extends Controller
         // $posts =Post::where('user_id', $user->id)->with('posts')->orderBy('updated_at','desc');
         //ログの出力
         // \Log::info($userid);
-        \Log::info($posts);
-        \Log::info(auth()->user());
+        // \Log::info($posts);
+        // \Log::info(auth()->user());
 
         // return $user;
         // return response()->json(compact('user', 'posts'),200);

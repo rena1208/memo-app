@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Route::post('/user/{userid}/post',[PostController::class,'store']);
     Route::post('/user/post',[PostController::class,'store']);
     //メモの詳細
-    Route::get('/user/post/{postid}',[PostController::class,'postDetail']);
+    Route::get('/user/post/{postid}/detail',[PostController::class,'postDetail']);
     //メモの削除機能
     Route::delete('/user/post/{postid}', [PostController::class, 'deletePost']);
 });
