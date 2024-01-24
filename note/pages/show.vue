@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="loggedIn">
     <!-- {{ $route.params.userid }} -->
     <!-- <div v-if="session('flash')" class="alert alert-danger">
       <ul>
@@ -12,17 +12,27 @@
       <span>{{ loginUser.name }}</span
       >さんのメモ一覧
     </h2>
-    {{ $route.params.userid }}
-    <div v-if="loggedIn"></div>
     <button type="button" @click="logout">ログアウト</button>
     <!-- <div v-for="user in users" :key="user.id"> -->
-    <div v-for="post in posts" :key="post.id">
-      <h3 id="title">{{ post.title }}</h3>
-      <p id="text">{{ post.text }}</p>
-      <button type="button">
-        <nuxt-link :to="`post/${post.id}/detail`">詳細</nuxt-link>
-      </button>
-      <button type="button" @click="deletePost(post.id)">削除</button>
+    <div class="flex">
+      <div v-for="post in posts" :key="post.id">
+        <div class="post">
+          <h3 class="title" id="title">{{ post.title }}</h3>
+          <p class="text" id="text">{{ post.text }}</p>
+          <div class="flex_button">
+            <button class="post_button" type="button">
+              <nuxt-link :to="`post/${post.id}/detail`">詳細</nuxt-link>
+            </button>
+            <button
+              class="post_button"
+              type="button"
+              @click="deletePost(post.id)"
+            >
+              削除
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <p v-if="updatedPosts">{{ updatedPosts }}</p>
     <!-- </div> -->
@@ -42,15 +52,16 @@
           </li>
         </ul>
       </div>
-      <!-- <meta name="csrfToken" content="{{ csrfToken() }}" /> -->
-      <dl>
-        <dt>タイトル　：</dt>
-        <dd><input id="title" type="string" v-model="title" /></dd>
-      </dl>
-      <dl>
-        <dt>メモ　：</dt>
-        <dd><textarea id="text" type="text" v-model="text"></textarea></dd>
-      </dl>
+      <div class="box">
+        <dl>
+          <dt>タイトル　：</dt>
+          <dd><input id="title" type="string" v-model="title" /></dd>
+        </dl>
+        <dl>
+          <dt>メモ　：</dt>
+          <dd><textarea id="text" type="text" v-model="text"></textarea></dd>
+        </dl>
+      </div>
       <button type="button" @click="postNote">保存！</button>
     </form>
   </div>
@@ -187,6 +198,35 @@ async function postNote() {
 </script>
 
 <style>
+.flex {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.post {
+  padding: 10px 1em;
+  margin: 1rem 20px;
+  color: #565656;
+  background: #fff0e2;
+  box-shadow: 0px 0px 0px 4px #fcc89e;
+  /* box-shadow: 0px 0px 0px 4px #e2f1ff; */
+  border-radius: 8px;
+  width: 190px;
+}
+.flex_button {
+  justify-content: center;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.post_button {
+  margin: 0 5px;
+}
+.title {
+  padding-bottom: 5px;
+  border-bottom: dashed 2px #fcc89e;
+}
+p {
+  white-space: pre-wrap;
+}
 h2 {
   color: #565656;
   font-family: "ヒラギノ丸ゴ Pro";
@@ -199,5 +239,50 @@ h2 {
   background: #ffd9d9;
   color: #ff4f4fe4;
   font-weight: bold;
+}
+.box {
+  padding: 1em 1em;
+  margin: 1.5rem auto;
+  color: #565656;
+  background: #ffffdd;
+  box-shadow: 0px 0px 0px 4px #fcc89e;
+  border-radius: 8px;
+  text-align: center;
+  justify-content: center;
+  width: 60%;
+  height: 15rem;
+}
+dl {
+  display: flex;
+  justify-content: space-between;
+  background-size: 15px 2px;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  margin: 25px 3.5rem;
+}
+dt {
+  font-size: 18px;
+  text-align: left;
+  padding-top: 15px;
+  padding-left: 15px;
+  width: 200px;
+}
+dd {
+  padding-top: 10px;
+  width: calc(100% - 10px);
+  text-align: left;
+}
+input {
+  width: 80%;
+  height: 20px;
+}
+textarea {
+  width: 80%;
+  height: 120px;
+}
+button {
+  display: block;
+  margin: auto;
+  font-size: 15px;
 }
 </style>

@@ -66,12 +66,12 @@ class PostController extends Controller
         $post = Post::where('user_id', $userid)->findOrFail($postid);
         $post->delete();
         // $post =Post::where('user_id', $user->id)->where('id', $user->id);
-        \Log::info(response()->json(compact('post')));
+        // \Log::info(response()->json(compact('post')));
         return response()->json(compact('post'),200);
-        \Log::info($user);
-        \Log::info($userid);
-        \Log::info($post);
-        \Log::info($postid);
+        // \Log::info($user);
+        // \Log::info($userid);
+        // \Log::info($post);
+        // \Log::info($postid);
         
     }
 }
