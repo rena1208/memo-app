@@ -6,8 +6,14 @@
       <h3>{{ postDetail.title }}</h3>
       <p class="text">{{ postDetail.text }}</p>
     </div>
-
-    <button type="button" @click="$router.back()">もどる</button>
+    <div class="flex_button">
+      <button class="back-button" type="button" @click="$router.back()">
+        もどる
+      </button>
+      <button class="button" type="button">
+        <nuxt-link :to="`/post/${postDetail.id}/edit`"><a>編集</a></nuxt-link>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -44,17 +50,19 @@ console.log(formatDate);
 console.log(postDetail);
 console.log(postid);
 </script>
-<style>
+<style scoped>
 .box {
   padding: 10px 1em;
-  margin: 1rem 20px;
+  margin: 3rem auto;
   color: #565656;
   background: #fff0e2;
   box-shadow: 0px 0px 0px 4px #fcc89e;
-  /* box-shadow: 0px 0px 0px 4px #e2f1ff; */
   border-radius: 8px;
   width: 60%;
   height: 30rem;
+}
+p {
+  margin: 3px 0;
 }
 h3 {
   padding-bottom: 5px;
@@ -64,5 +72,41 @@ h3 {
 }
 .text {
   white-space: pre-wrap;
+  font-size: 20px;
+}
+.flex_button {
+  justify-content: center;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.button {
+  margin: 10px;
+  border-radius: 4px;
+  background: #ffcda5;
+  border: 3px solid #ff9845;
+  font-family: "ヒラギノ丸ゴ Pro";
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 2px;
+  width: 6rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+a {
+  color: #5e5d5d;
+}
+.back-button {
+  margin: 10px;
+  border-radius: 4px;
+  background: #d3f392;
+  border: 3px solid #a5ea1c;
+  color: #5e5d5d;
+  font-family: "ヒラギノ丸ゴ Pro";
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 2px;
+  width: 6rem;
+  height: 2.5rem;
+  cursor: pointer;
 }
 </style>

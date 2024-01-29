@@ -1,17 +1,15 @@
 <template>
   <div>
-    <table class="app-title">
-      <tr>
-        <td><h1>めも</h1></td>
-        <!-- <div>{{ users }}</div> -->
-        <td>
-          <img
-            class="icon"
-            src="/assets/image/21459b5b441dbb499eb8b11cccbf2306_t.jpeg"
-          />
-        </td>
-      </tr>
-    </table>
+    <div class="title-flex">
+      <h1 class="title">めも</h1>
+      <!-- <div>{{ users }}</div> -->
+      <div class="title">
+        <img
+          class="icon"
+          src="/assets/image/21459b5b441dbb499eb8b11cccbf2306_t.jpeg"
+        />
+      </div>
+    </div>
     <div class="title-line">
       <img class="line" src="/assets/image/imagesa.png" />
     </div>
@@ -33,10 +31,9 @@
           <dt><label for="password">パスワード：</label></dt>
           <dd><input id="password" type="password" v-model="password" /></dd>
         </dl>
-
-        <button type="button" @click="login">ログイン</button>
       </form>
     </div>
+    <button type="button" @click="login">ログイン</button>
   </div>
 </template>
 
@@ -86,14 +83,19 @@ async function login() {
 }
 </script>
 
-<style>
-.app-title {
-  margin: auto;
-  padding-bottom: 0;
+<style scoped>
+.title-flex {
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }
-
+.title {
+  margin: 20px;
+  margin-top: 40px;
+}
 h1 {
   font-size: 100px;
+  letter-spacing: 3px;
   font-weight: bold;
   color: rgba(0, 0, 0, 0);
   text-shadow: 3.5px 3.5px 0 #ffeaea;
@@ -118,25 +120,26 @@ h1 {
 
 .box {
   padding: 1em 1em;
-  margin: 3em 15em;
+  margin: 3em 15em 2rem 15rem;
   color: #565656;
   background: #ffffdd;
   box-shadow: 0px 0px 0px 4px #fcc89e;
   border-radius: 8px;
+  width: 60%;
+  height: 15rem;
 }
 .login-form {
   display: block;
   margin: 0 auto;
   text-align: center;
 }
-
 dl {
   display: flex;
   justify-content: space-between;
   background-size: 15px 2px;
   background-repeat: repeat-x;
   background-position: left bottom;
-  margin: 25px 3.5rem;
+  margin: 40px 3.5rem;
 }
 dt {
   font-size: 18px;
@@ -155,8 +158,19 @@ input {
   height: 25px;
 }
 button {
-  margin: 10px 0;
-  font-size: 15px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 4px;
+  background: #ffcda5;
+  border: 3px solid #ff9845;
+  color: #5e5d5d;
+  font-size: 16px;
+  font-family: "ヒラギノ丸ゴ Pro";
+  font-weight: 800;
+  letter-spacing: 2px;
+  width: 6rem;
+  height: 2.5rem;
+  cursor: pointer;
 }
 .alert-danger {
   background: #ffd9d9;

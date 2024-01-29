@@ -45,4 +45,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/user/post/{postid}/detail',[PostController::class,'postDetail']);
     //メモの削除機能
     Route::delete('/user/post/{postid}', [PostController::class, 'deletePost']);
+    //メモの編集機能
+    Route::post('/user/post/{postid}/edit',[PostController::class,'postEdit']);
 });
