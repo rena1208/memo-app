@@ -19,7 +19,7 @@ class PostController extends Controller
         //バリデーション
             $validator = Validator::make($request->all(), [
                 'title'  => 'max:30',
-                'text' => 'required|max:150'
+                'text' => 'required|max:300'
             ]);
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 422);
@@ -73,5 +73,31 @@ class PostController extends Controller
         // \Log::info($post);
         // \Log::info($postid);
         
+    }
+
+    //メモの編集機能
+    public function postEdit(Request $request, $postid) {
+        //バリデーション
+        $validator = Validator::make($request->all(), [
+            'title'  => 'max:30',
+            'text' => 'required|max:300'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        //データの更新
+        // $user = Auth::user();
+        $userid = Auth::id();
+        $post = Post::where('user_id', $userid)->findOrFail($postid);
+        $post->title = $request->title;
+        $post->text = $request->input('text');
+        $post->save();
+        // \Log::info($user);
+        // \Log::info($userid);
+        \Log::info($post);
+        \Log::info($postid);
+        \Log::info($post->title);
+        \Log::info($post->text);
+        return response()->json(compact('post'),200);
     }
 }

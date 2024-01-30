@@ -20,15 +20,15 @@
           <h3 class="title" id="title">{{ post.title }}</h3>
           <p class="text" id="text">{{ post.text }}</p>
           <div class="flex_button">
-            <button class="post_button" type="button">
-              <nuxt-link :to="`post/${post.id}/detail`">詳細</nuxt-link>
-            </button>
             <button
-              class="post_button"
+              class="delete_button"
               type="button"
               @click="deletePost(post.id)"
             >
               削除
+            </button>
+            <button class="post_button" type="button">
+              <nuxt-link :to="`post/${post.id}/detail`"><a>詳細</a></nuxt-link>
             </button>
           </div>
         </div>
@@ -62,7 +62,7 @@
           <dd><textarea id="text" type="text" v-model="text"></textarea></dd>
         </dl>
       </div>
-      <button type="button" @click="postNote">保存！</button>
+      <button class="button" type="button" @click="postNote">保存！</button>
     </form>
   </div>
 </template>
@@ -197,7 +197,7 @@ async function postNote() {
 }
 </script>
 
-<style>
+<style scoped>
 .flex {
   display: flex;
   flex-wrap: nowrap;
@@ -219,6 +219,34 @@ async function postNote() {
 }
 .post_button {
   margin: 0 5px;
+  border-radius: 4px;
+  background: #ffcda5;
+  border: 1.5px solid #ff9845;
+  color: #5e5d5d;
+  font-family: "ヒラギノ丸ゴ Pro";
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 4rem;
+  height: 1.8rem;
+  cursor: pointer;
+}
+.delete_button {
+  margin: 0 5px;
+  border-radius: 4px;
+  background: #d3f392;
+  border: 1.5px solid #a5ea1c;
+  color: #5e5d5d;
+  font-family: "ヒラギノ丸ゴ Pro";
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 4rem;
+  height: 1.8rem;
+  cursor: pointer;
+}
+a {
+  color: #5e5d5d;
 }
 .title {
   padding-bottom: 5px;
@@ -280,9 +308,19 @@ textarea {
   width: 80%;
   height: 120px;
 }
-button {
+.button {
   display: block;
   margin: auto;
-  font-size: 15px;
+  border-radius: 4px;
+  background: #fcc89e;
+  border: 2.5px solid #ff9845;
+  color: #5e5d5d;
+  font-family: "ヒラギノ丸ゴ Pro";
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 2px;
+  width: 6rem;
+  height: 2.5rem;
+  cursor: pointer;
 }
 </style>

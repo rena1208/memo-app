@@ -43,9 +43,9 @@
           </dd>
         </dl>
         <p></p>
-        <button type="button" @click="registerUser">登録！</button>
       </form>
     </div>
+    <button type="button" @click="registerUser">登録！</button>
   </div>
 </template>
 
@@ -122,7 +122,7 @@ async function registerUser() {
 }
 </script>
 
-<style>
+<style scoped>
 h2 {
   color: #565656;
   font-family: "ヒラギノ丸ゴ Pro";
@@ -171,13 +171,23 @@ dd {
 }
 input {
   width: 80%;
-  height: 20px;
+  height: 25px;
 }
 button {
-  margin-top: 10px;
-  font-size: 15px;
+  display: block;
+  margin: 10px auto;
+  border-radius: 4px;
+  background: #ffcda5;
+  border: 3px solid #ff9845;
+  color: #5e5d5d;
+  font-size: 16px;
+  font-family: "ヒラギノ丸ゴ Pro";
+  font-weight: 800;
+  letter-spacing: 2px;
+  width: 6rem;
+  height: 2.5rem;
+  cursor: pointer;
 }
-
 .alert-danger {
   background: #ffd9d9;
   color: #ff4f4fe4;
