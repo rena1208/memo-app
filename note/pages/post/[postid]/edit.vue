@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AuthHeader />
     <h2>メモの編集</h2>
     <form class="editNote-form">
       <div v-if="errors" class="alert alert-danger">
@@ -45,6 +46,7 @@ console.log("Is Logged In:", loggedIn);
 const errors = ref([]);
 const postid = useRoute().params.postid;
 const $config = useRuntimeConfig();
+const emit = defineEmits(["postEdit"]);
 
 //メモの情報を取得
 const { data: post } = await useAsyncData("post", () =>
@@ -68,7 +70,6 @@ async function postEdit() {
       }),
     })
   );
-  console.log(error.value);
   console.log(postEdit);
 
   // バリデーションエラーを含む何かしらのエラーがある場合
@@ -77,7 +78,11 @@ async function postEdit() {
     // console.log(errors.value);
     console.log(error.value);
   } else {
-    // router.push("/show");
+    router.push("/show");
+    emit("postEdit", {
+      message: "メモを編集しました",
+      isSnackbar: true,
+    });
   }
 }
 </script>

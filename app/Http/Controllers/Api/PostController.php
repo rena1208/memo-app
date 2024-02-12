@@ -32,18 +32,18 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->text = $request->input('text');
         $post->save();
-        \Log::info(response()->json(compact('post')));
+
+        // session()->flash('flash.success', '登録に成功しました');
+        // $headerValue = $request->header('header_name');
+        // \Log::info(response()->json(compact('post')));
+        // \Log::info($post);
+        // \Log::info(session('flash.success'));
         return response()->json(compact('post'),200);
         
         // \Log::info(auth()->user());
         // \Log::info(Auth::id());
 
-        // if ($result) {
-        //     session()->flash('flash.success', '登録に成功しました');
-        // } else {
-        //     session()->flash('flash.error', '登録に失敗しました');
-        // }
-        // $headerValue = $request->header('header_name');
+        
     }
 
     //メモの詳細データ表示

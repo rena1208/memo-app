@@ -9,6 +9,7 @@ return [
     'min' => [
         'string' =>':attributeは:min文字以上で入力してください',
     ],
+    'confirmed' => ':attributeが確認用と一致しません',
 
     'attributes' => [
         'name' => 'お名前',

@@ -38,15 +38,24 @@
 </template>
 
 <script setup>
+// import loginMessage from "~/components/LoginMessage.vue";
+import { ref } from "vue"; // Import ref if not already imported
 definePageMeta({
   middleware: "guest",
 });
-
+// const props = defineProps({
+//   flashMessage: String,
+//   snackbar: Boolean,
+// });
+// console.log(props);
+// console.log(snackbar);
 const { $sanctumAuth } = useNuxtApp();
 
 const router = useRouter();
 const errors = ref([]);
-
+const flashMessage = ref("");
+const snackbar = ref(false);
+const emit = defineEmits(["login"]);
 //初期値の設定;
 const email = ref("");
 const password = ref("");
@@ -70,6 +79,15 @@ async function login() {
         // console.log(data.id);
         console.log(data);
         router.push("/show");
+        emit("login", {
+          message: "ログインしました！",
+          isSnackbar: true,
+        });
+        // console.log("loginSnacbar");
+        // flashMessage.value = "ログインしました！";
+        // snackbar.value = ref(true);
+        // console.log(flashMessage.value);
+        // console.log(snackbar.value);
         // router.push("/register");
         // router.push(`/user/{userid}/show`);
       }
@@ -77,7 +95,8 @@ async function login() {
   } catch (e) {
     // 認証エラー時の処理
     console.log(errors);
-    errors.value = ["メールアドレス、もしくはパスワードが違います。"];
+    console.log(errors.value);
+    errors.value = ["メールアドレス、もしくはパスワードが間違っています"];
     router.push("/login");
   }
 }
