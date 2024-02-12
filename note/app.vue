@@ -7,11 +7,33 @@
       </tr>
     </tbody>
   </table> -->
-  <div>
-    <NuxtPage />
-  </div>
+  <v-app>
+    <div>
+      <AuthHeader @logout="showSnackbar" />
+      <FlashMessage :flashMessage="flashMessage" :snackbar="snackbar" />
+      <NuxtPage
+        @login="showSnackbar"
+        @postNote="showSnackbar"
+        @deletePost(postid)="showSnackbar"
+        @postEdit="showSnackbar"
+        @registerUser="showSnackbar"
+      />
+    </div>
+  </v-app>
 </template>
 
 <script setup>
+import { ref } from "vue";
+// import loginSnacbar from "~/pages/login.vue";
 // const { data } = await useFetch("http://127.0.0.1:8000/api/users");
+const flashMessage = ref("");
+const snackbar = ref(false);
+
+function showSnackbar({ message, isSnackbar }) {
+  console.log("ログインメッセージ表示の関数");
+  flashMessage.value = message;
+  snackbar.value = isSnackbar;
+  console.log(message);
+  console.log(isSnackbar);
+}
 </script>

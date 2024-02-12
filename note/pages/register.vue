@@ -56,9 +56,9 @@ definePageMeta({
 // 初期値の設定
 const name = ref("");
 const email = ref("");
-const email_verified_at = ref("");
+const email_confirmation = ref("");
 const password = ref("");
-const passwordConfirm = ref("");
+const password_confirmation = ref("");
 
 import { ref } from "vue";
 // import { $sanctumAuth } from "nuxt-sanctum-auth";
@@ -69,6 +69,7 @@ const router = useRouter();
 const { $sanctumAuth } = useNuxtApp();
 const { $apiFetch } = useNuxtApp();
 const $config = useRuntimeConfig();
+const emit = defineEmits(["registerUser"]);
 
 // console.log($config);
 
@@ -112,7 +113,11 @@ async function registerUser() {
         },
         (data) => {
           console.log(data);
-          router.push(`/user/{userid}/show`);
+          router.push(`/show`);
+          emit("registerUser", {
+            message: "ユーザーの登録ができました！",
+            isSnackbar: true,
+          });
         }
       );
     } catch (e) {

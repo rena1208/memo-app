@@ -1,18 +1,9 @@
 <template>
   <div v-if="loggedIn">
-    <!-- {{ $route.params.userid }} -->
-    <!-- <div v-if="session('flash')" class="alert alert-danger">
-      <ul>
-        <li v-for="error in errors" :key="error">
-          {{ error }}
-        </li>
-      </ul>
-    </div> -->
     <h2>
       <span>{{ loginUser.name }}</span
       >さんのメモ一覧
     </h2>
-    <button type="button" @click="logout">ログアウト</button>
     <!-- <div v-for="user in users" :key="user.id"> -->
     <div class="flex">
       <div v-for="post in posts" :key="post.id">
@@ -23,7 +14,7 @@
             <button
               class="delete_button"
               type="button"
-              @click="deletePost(post.id)"
+              @click="confirmDelete(post.id)"
             >
               削除
             </button>
@@ -35,14 +26,6 @@
       </div>
     </div>
     <p v-if="updatedPosts">{{ updatedPosts }}</p>
-    <!-- </div> -->
-    <!-- @foreach($users as $user)
-  @foreach($user->posts as $post)
-    <h3>{{$post->title}}</h3>
-    <p>{{$post->content}}</p>
-  @endforeach
-@endforeach -->
-    <!-- {{ postsData }} -->
     <h2>メモ入力</h2>
     <form class="postNote-form">
       <div v-if="errors" class="alert alert-danger">
@@ -73,21 +56,22 @@ definePageMeta({
   middleware: "auth",
 });
 const { $sanctumAuth } = useNuxtApp();
-
+const { $apiFetch } = useNuxtApp();
 //パラメーターの取得
 const router = useRouter();
 
 const { user, loggedIn } = useAuth(); // or useState('auth').value
 
-console.log("User Object:", user);
-console.log("Is Logged In:", loggedIn);
+// console.log("User Object:", user);
+// console.log("Is Logged In:", loggedIn);
 const users = ref();
 const errors = ref([]);
 const posts = ref([]);
 const title = ref("");
 const text = ref("");
-const { $apiFetch } = useNuxtApp();
 const $config = useRuntimeConfig();
+const emit = defineEmits(["postNote", "deletePost(postid)"]);
+
 //ログインユーザー情報の取得
 const { data: postsData } = await useAsyncData("user", () =>
   // $apiFetch(`api/user/{userid}`)
@@ -104,26 +88,15 @@ const loginUser = postsData.value.user;
 // console.log(loginUser.id);
 // console.log(postsData.value.posts);
 // console.log(postsData.value.user);
-//パラメータの取得
-// async function asyncData({ params }) {
-//   const userid = params.userid;
-//   // console.log(params.userid);
-//   return { userid };
-// }
-
-//ログアウト機能
-async function logout() {
-  console.log("ログアウトを押した");
-  await $sanctumAuth.logout(
-    // optional callback function
-    (data) => {
-      console.log(data);
-      router.push("/login");
-    }
-  );
-}
 
 //メモの削除機能
+async function confirmDelete(postid) {
+  const confirmed = confirm("本当に削除しますか？");
+  if (confirmed) {
+    await deletePost(postid);
+  }
+}
+
 async function deletePost(postid) {
   console.log("削除をおした");
   console.log(postid);
@@ -137,7 +110,7 @@ async function deletePost(postid) {
   if (error && error.value) {
     console.error("メモの削除に失敗しました", error);
   } else {
-    console.log("メモが削除されました", deletePost);
+    console.log("メモを削除しました", deletePost);
     // メモ一覧を再取得
     // const { data: postsData } = await useAsyncData("user", () =>
     //   $apiFetch(`api/user`)
@@ -151,6 +124,10 @@ async function deletePost(postid) {
     );
     console.log(postIndex);
     posts.value.splice(postIndex, 1); //削除
+    emit("deletePost(postid)", {
+      message: "メモを削除しました",
+      isSnackbar: true,
+    });
   }
 }
 
@@ -181,18 +158,16 @@ async function postNote() {
     // console.log(errors.value);
     console.log(error.value.data.errors);
   } else {
-    // メモ一覧を再取得
-    // const { data: postsData } = await useAsyncData("user", () =>
-    //   $apiFetch(`api/user`)
-    // );
-
-    // posts.value = postsData.value.posts;
     console.log(posts.value); //ポスト前のメモたち
     console.log(post); //投稿したメモ
     postsData.value.posts.unshift(post.value.post);
     // posts.value.push(post.value.post);
     title.value = "";
     text.value = "";
+    emit("postNote", {
+      message: "メモを登録しました",
+      isSnackbar: true,
+    });
   }
 }
 </script>
@@ -321,6 +296,10 @@ textarea {
   letter-spacing: 2px;
   width: 6rem;
   height: 2.5rem;
+  cursor: pointer;
+}
+.flashButton {
+  float: right;
   cursor: pointer;
 }
 </style>

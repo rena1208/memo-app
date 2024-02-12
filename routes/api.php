@@ -39,7 +39,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //ログアウト
     Route::post('/logout',[LogoutController::class,'logout']);
     //メモの投稿
-    // Route::post('/user/{userid}/post',[PostController::class,'store']);
     Route::post('/user/post',[PostController::class,'store']);
     //メモの詳細
     Route::get('/user/post/{postid}/detail',[PostController::class,'postDetail']);

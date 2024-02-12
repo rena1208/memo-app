@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AuthHeader />
     <div class="box">
       <p>作成日　　：{{ formatDate(postDetail.created_at) }}</p>
       <p>最終更新日：{{ formatDate(postDetail.updated_at) }}</p>

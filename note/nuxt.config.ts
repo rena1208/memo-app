@@ -6,8 +6,12 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-sanctum-auth',
     // 'date-fns',
-
+    '@pinia/nuxt'
   ],
+  build: {
+    transpile: ["vuetify"]
+  },
+
 
   runtimeConfig: {
     public: {
