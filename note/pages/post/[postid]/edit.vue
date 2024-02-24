@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AuthHeader />
+    <AuthHeader :flashMessage="flashMessage" :snackbar="snackbar" />
     <h2>メモの編集</h2>
     <form class="editNote-form">
       <div v-if="errors" class="alert alert-danger">
@@ -30,6 +30,7 @@
   </div>
 </template>
 <script setup>
+import { useFlashStore } from "~/store/flash";
 definePageMeta({
   middleware: "auth",
 });
@@ -46,7 +47,8 @@ console.log("Is Logged In:", loggedIn);
 const errors = ref([]);
 const postid = useRoute().params.postid;
 const $config = useRuntimeConfig();
-const emit = defineEmits(["postEdit"]);
+const flashStore = useFlashStore();
+// const emit = defineEmits(["postEdit"]);
 
 //メモの情報を取得
 const { data: post } = await useAsyncData("post", () =>
@@ -79,10 +81,11 @@ async function postEdit() {
     console.log(error.value);
   } else {
     router.push("/show");
-    emit("postEdit", {
-      message: "メモを編集しました",
-      isSnackbar: true,
-    });
+    flashStore.setSnackbar("メモの編集をしました");
+    // emit("postEdit", {
+    //   message: "メモを編集しました",
+    //   isSnackbar: true,
+    // });
   }
 }
 </script>
@@ -93,7 +96,8 @@ h2 {
   font-size: 30px;
   letter-spacing: 10px;
   text-align: center;
-  margin: 50px auto;
+  margin: 80px auto;
+  margin-bottom: 35px;
 }
 .box {
   padding: 1em 1em;

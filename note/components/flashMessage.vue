@@ -1,17 +1,19 @@
 <template>
   <div>
-    {{ props.snackbar }}
+    <!-- {{ props.snackbar }}
     {{ props.flashMessage }}
     {{ snackbar }}
-    {{ flashMessage }}
+    {{ flashMessage }} -->
     <v-snackbar
-      v-model="snack"
+      v-model="flashStore.snack"
       color="success"
       location="top center"
       timeout="3000"
     >
-      {{ flashMessage }}
-      <v-btn class="flashButton" @click="snack = false">Close</v-btn>
+      <a class="flashText">{{ flashStore.text }}</a>
+      <v-btn class="flashButton" @click="flashStore.unsetSnackbar()"
+        >Close</v-btn
+      >
     </v-snackbar>
   </div>
 </template>
@@ -31,12 +33,12 @@ const props = defineProps({
     defalt: false,
   },
 });
-console.log(props);
-console.log(props.snackbar);
-console.log(props.flashMessage);
+// console.log(props);
+// console.log(props.snackbar);
+// console.log(props.flashMessage);
 const snack = ref(props.snackbar);
-console.log(snack);
-console.log(props.snackbar);
+// console.log(snack);
+// console.log(props.snackbar);
 
 watch(
   () => props.snackbar,
@@ -45,3 +47,14 @@ watch(
   }
 );
 </script>
+
+<style scoped>
+.flashText {
+  padding-left: 10px;
+  font-size: 17px;
+}
+.flashButton {
+  float: right;
+  cursor: pointer;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AuthHeader />
+    <AuthHeader :flashMessage="flashMessage" :snackbar="snackbar" />
     <div class="box">
       <p>作成日　　：{{ formatDate(postDetail.created_at) }}</p>
       <p>最終更新日：{{ formatDate(postDetail.updated_at) }}</p>
@@ -51,10 +51,12 @@ console.log(formatDate);
 console.log(postDetail);
 console.log(postid);
 </script>
+
 <style scoped>
 .box {
   padding: 10px 1em;
-  margin: 3rem auto;
+  margin: 5.5rem auto;
+  margin-bottom: 2rem;
   color: #565656;
   background: #fff0e2;
   box-shadow: 0px 0px 0px 4px #fcc89e;

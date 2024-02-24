@@ -50,6 +50,7 @@
 </template>
 
 <script setup>
+import { useFlashStore } from "~/store/flash";
 definePageMeta({
   middleware: "guest",
 });
@@ -59,6 +60,7 @@ const email = ref("");
 const email_confirmation = ref("");
 const password = ref("");
 const password_confirmation = ref("");
+const flashStore = useFlashStore();
 
 import { ref } from "vue";
 // import { $sanctumAuth } from "nuxt-sanctum-auth";
@@ -69,7 +71,7 @@ const router = useRouter();
 const { $sanctumAuth } = useNuxtApp();
 const { $apiFetch } = useNuxtApp();
 const $config = useRuntimeConfig();
-const emit = defineEmits(["registerUser"]);
+// const emit = defineEmits(["registerUser"]);
 
 // console.log($config);
 
@@ -113,13 +115,14 @@ async function registerUser() {
         },
         (data) => {
           console.log(data);
-          router.push(`/show`);
-          emit("registerUser", {
-            message: "ユーザーの登録ができました！",
-            isSnackbar: true,
-          });
+          flashStore.setSnackbar("ユーザーの登録ができました！");
+          // emit("registerUser", {
+          //   message: "ユーザーの登録ができました！",
+          //   isSnackbar: true,
+          // });
         }
       );
+      window.location.href = "/show";
     } catch (e) {
       console.error("ログインエラー:", e.errors);
     }
