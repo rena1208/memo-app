@@ -1,6 +1,7 @@
 <template>
   <div v-if="loggedIn">
-    <h2>
+    <!-- <AuthHeader :flashMessage="flashMessage" :snackbar="snackbar" /> -->
+    <h2 class="userName">
       <span>{{ loginUser.name }}</span
       >さんのメモ一覧
     </h2>
@@ -52,6 +53,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { useFlashStore } from "~/store/flash";
 definePageMeta({
   middleware: "auth",
 });
@@ -70,15 +72,16 @@ const posts = ref([]);
 const title = ref("");
 const text = ref("");
 const $config = useRuntimeConfig();
-const emit = defineEmits(["postNote", "deletePost(postid)"]);
+const flashStore = useFlashStore();
+// const emit = defineEmits(["postNote", "deletePost(postid)"]);
 
 //ログインユーザー情報の取得
 const { data: postsData } = await useAsyncData("user", () =>
   // $apiFetch(`api/user/{userid}`)
   $apiFetch(`api/user`)
 );
-console.log(posts);
-console.log(postsData);
+// console.log(posts);
+// console.log(postsData);
 
 posts.value = postsData.value.posts;
 // posts = postsData.value.posts;
@@ -124,10 +127,11 @@ async function deletePost(postid) {
     );
     console.log(postIndex);
     posts.value.splice(postIndex, 1); //削除
-    emit("deletePost(postid)", {
-      message: "メモを削除しました",
-      isSnackbar: true,
-    });
+    flashStore.setSnackbar("メモを削除しました");
+    // emit("deletePost(postid)", {
+    //   message: "メモを削除しました",
+    //   isSnackbar: true,
+    // });
   }
 }
 
@@ -164,10 +168,11 @@ async function postNote() {
     // posts.value.push(post.value.post);
     title.value = "";
     text.value = "";
-    emit("postNote", {
-      message: "メモを登録しました",
-      isSnackbar: true,
-    });
+    flashStore.setSnackbar("メモを追加しました");
+    // emit("postNote", {
+    //   message: "メモを登録しました",
+    //   isSnackbar: true,
+    // });
   }
 }
 </script>
@@ -238,14 +243,17 @@ h2 {
   text-align: center;
   margin: 0;
 }
+.userName {
+  margin-top: 65px;
+}
 .alert-danger {
   background: #ffd9d9;
   color: #ff4f4fe4;
   font-weight: bold;
 }
 .box {
-  padding: 1em 1em;
-  margin: 1.5rem auto;
+  padding: 0.6em 1em;
+  margin: 1rem auto;
   color: #565656;
   background: #ffffdd;
   box-shadow: 0px 0px 0px 4px #fcc89e;
@@ -285,7 +293,7 @@ textarea {
 }
 .button {
   display: block;
-  margin: auto;
+  margin: 0 auto;
   border-radius: 4px;
   background: #fcc89e;
   border: 2.5px solid #ff9845;
@@ -296,10 +304,6 @@ textarea {
   letter-spacing: 2px;
   width: 6rem;
   height: 2.5rem;
-  cursor: pointer;
-}
-.flashButton {
-  float: right;
   cursor: pointer;
 }
 </style>

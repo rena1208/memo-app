@@ -38,8 +38,9 @@
 </template>
 
 <script setup>
+import { useFlashStore } from "~/store/flash";
 // import loginMessage from "~/components/LoginMessage.vue";
-import { ref } from "vue"; // Import ref if not already imported
+// import { ref } from "vue"; // Import ref if not already imported
 definePageMeta({
   middleware: "guest",
 });
@@ -55,7 +56,8 @@ const router = useRouter();
 const errors = ref([]);
 const flashMessage = ref("");
 const snackbar = ref(false);
-const emit = defineEmits(["login"]);
+const flashStore = useFlashStore();
+// const emit = defineEmits(["flashStore.setSnackbar()"]);
 //初期値の設定;
 const email = ref("");
 const password = ref("");
@@ -78,11 +80,14 @@ async function login() {
         // console.log(params.userid);
         // console.log(data.id);
         console.log(data);
-        router.push("/show");
-        emit("login", {
-          message: "ログインしました！",
-          isSnackbar: true,
-        });
+        // ログイン後にSnackbarを表示
+        flashStore.setSnackbar("ログインしました！！");
+        // router.push("/show");
+        // emit("flashStore.setSnackbar()", {
+        //   message: "ログインしました！",
+        //   isSnackbar: true,
+        // });
+
         // console.log("loginSnacbar");
         // flashMessage.value = "ログインしました！";
         // snackbar.value = ref(true);
@@ -92,12 +97,14 @@ async function login() {
         // router.push(`/user/{userid}/show`);
       }
     );
+    //リダイレクト
+    window.location.href = "/show";
   } catch (e) {
     // 認証エラー時の処理
     console.log(errors);
     console.log(errors.value);
     errors.value = ["メールアドレス、もしくはパスワードが間違っています"];
-    router.push("/login");
+    router.push("/");
   }
 }
 </script>
@@ -110,7 +117,7 @@ async function login() {
 }
 .title {
   margin: 20px;
-  margin-top: 40px;
+  margin-top: 100px;
 }
 h1 {
   font-size: 100px;

@@ -40,7 +40,7 @@ export default defineNuxtConfig({
     },
     redirects: {
       home: '/show',
-      login: '/login',
+      login: '/',
       logout: '/'
     }
   },
