@@ -61,8 +61,9 @@ const flashStore = useFlashStore();
 //初期値の設定;
 const email = ref("");
 const password = ref("");
+const $config = useRuntimeConfig();
 
-// console.log($sanctumAuth);
+console.log($config);
 
 async function login() {
   console.log("おした");
