@@ -21,7 +21,7 @@ export default defineNuxtConfig({
 
   nuxtSanctumAuth: {
     token: false, // set true to use jwt-token auth instead of cookie. default is false
-    // baseUrl: BASE_URL,
+    baseUrl: process.env.BASE_URL,
 
     endpoints: {
       csrf: '/sanctum/csrf-cookie',
