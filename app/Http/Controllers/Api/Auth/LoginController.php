@@ -25,6 +25,8 @@ class LoginController extends Controller
             return new JsonResponse([
                 'message' => '認証成功！',
             ]);
+            \Log::info($user);
+            \Log::info($email);
             }else {
             // ユーザーがいない｜または｜DBのパスワードと合致していなければ
             throw ValidationException::withMessages([

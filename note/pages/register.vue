@@ -73,7 +73,7 @@ const { $apiFetch } = useNuxtApp();
 const $config = useRuntimeConfig();
 // const emit = defineEmits(["registerUser"]);
 
-// console.log($config);
+console.log($config);
 
 async function registerUser() {
   console.log("おした");
