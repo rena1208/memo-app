@@ -4,7 +4,7 @@
 # 概要<br>
 Todoリストや、買い物リスト、その他何でも気軽にメモできるアプリケーション<br>
 
-アプリURL               ...<br>
+アプリURL               ...　　　https://memo.memo-app-portfolio.com　<br>
 ゲストユーザー用メールアドレス　... user1@test.com<br>
 パスワード               ... 1234<br>
 
